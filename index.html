@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlphaInvest.org</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+  <header class="text-center py-10 bg-gray-800 shadow-md">
+    <h1 class="text-4xl font-bold">AlphaInvest.org</h1>
+    <p class="text-lg mt-2 text-gray-300">Your Trusted Crypto Investment Partner</p>
+  </header>
+
+  <main class="p-6 max-w-4xl mx-auto">
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-4">Live Crypto Prices</h2>
+      <div id="crypto-prices" class="space-y-2 text-lg">
+        <p>Bitcoin (BTC): <span id="btc-price">$...</span></p>
+        <p>Ethereum (ETH): <span id="eth-price">$...</span></p>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold mb-4">About AlphaInvest</h2>
+      <p class="text-gray-300">
+        AlphaInvest.org is a modern investment platform where we help you grow your crypto assets securely and transparently. 
+        Fill out the form below and our experts will contact you personally.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Sign Up for Investment</h2>
+      <form class="space-y-4 bg-gray-800 p-6 rounded-xl shadow-md" action="https://formspree.io/f/yourformid" method="POST">
+        <input type="text" name="name" placeholder="Full Name" required class="w-full p-2 rounded bg-gray-700 text-white" />
+        <input type="tel" name="phone" placeholder="Phone Number" required class="w-full p-2 rounded bg-gray-700 text-white" />
+        <input type="text" name="country" placeholder="Country" required class="w-full p-2 rounded bg-gray-700 text-white" />
+        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded w-full">
+          Submit
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    async function fetchPrices() {
+      try {
+        const res = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+        document.getElementById('btc-price').textContent = '$' + res.data.bitcoin.usd;
+        document.getElementById('eth-price').textContent = '$' + res.data.ethereum.usd;
+      } catch (e) {
+        console.error('Price fetch error', e);
+      }
+    }
+    fetchPrices();
+    setInterval(fetchPrices, 30000); // Refresh every 30 sec
+  </script>
+</body>
+</html>
